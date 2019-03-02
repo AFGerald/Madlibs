@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Input from './input';
+import Content from './content';
 
 class Card extends Component {
 
@@ -10,9 +11,9 @@ class Card extends Component {
 
         this.state = {
             color: '',
-            pluralNoun: ''  
+            pluralNoun: '', 
             adjectiveOne: '',
-            celebOne: '' 
+            celebOne: '', 
             adjectiveTwo: '',   
             nounOne: '',
             numberOne: '',
@@ -24,15 +25,21 @@ class Card extends Component {
             adjectiveFour: '',
             nounThree: '',
             celebFour: '',
-            adjectiveFirve: ''
+            adjectiveFirve: '',
+            contentVisible: false
         }
         
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleInputSubmit = this.handleInputSubmit.bind(this);
     }
 
     handleInputChange(event) {
          this.setState({ [event.target.name]: ' event.target.value' })
-         console.log(this.state);
+    }
+
+    handleFormSubmit(event) {
+        event.preventDefualt()
+        this.setState({ contentVisible: !this.state.contentVisible })
     }
 
     render() {
@@ -60,11 +67,18 @@ class Card extends Component {
         ]
 
         return (
-            <div className="card">
+            <form onSubmit={this.handleInputChange} className="card">
+                <div className="card__inputs">
+                    inputData.map(data => Input( (data), this.handleInputChange))
+                </div>
+                <button type="submit">{!this.state.contentVisible ? 'Generate Mad lib' : 'Clear Form'}</button>
                 {
                    inputDate.map(data => Input( (data), this.handleInputChange  ))
                 }
-           </div>
+                {
+                    this.state.contentVisible ? <Content data={this.state}/> : <div>Hello</div>
+                }
+           </form>
 
         )
     }
